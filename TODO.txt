@@ -4,5 +4,14 @@ Finalize idea
 More detailed chart design
 obtain data
 
+Ideas Generated:
+ - Maybe add a fourth column to the second graph showing the average 
+	height of non-medalists.
+
+
 Friday:
 
+Data Cleaning
+
+ - Drop NaN heights
+ - For first scatterplot, drop non-medalists.
