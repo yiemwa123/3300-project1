@@ -9,6 +9,78 @@
 </head>
 
 <body>
-    
+    <div><p>Graph 1 </p><svg id="graph1"></svg>
+
+        <script>
+            const width = 650;
+            const height = 500;
+            const margins = 20;
+
+
+            d3.csv("athletes.csv", d3.autoType).then( (data) => {
+
+                let medalData = [];
+
+                data.forEach(d => {
+                    //Filter out non-medalists
+                    if(d.silver + d.gold + d.bronze > 0) {
+                        medalData.push(d);
+                    }
+                })
+
+                let obj = d3.select('svg#graph1');
+                obj.attr('width', width)
+                   .attr('height', height);
+
+                let heightExtent = d3.extent(medalData, d=> d.height);
+
+                let maxGold = d3.max(data, (d) => {return Math.max(d.gold)});
+                let maxSilver = d3.max(data, (d) => {return Math.max(d.silver)});
+                let maxBronze = d3.max(data, (d) => {return Math.max(d.bronze)});
+
+                let medalExtent = [0, Math.max(maxGold, maxSilver, maxBronze)];
+
+                let heighScale = d3.scaleLinear().domain(heightExtent).range(margins, width-margins);
+                let medalScale = d3.scaleLinear().domain(medalExtent).range(height-margins, margins);
+
+                let chart = obj.append('g')
+                               .attr("id", "chart")
+                               .attr("tranform", `translate(20, 20)`)
+                               .style("background-color", "black");
+
+
+
+
+                let y = d3.axisLeft(medalScale);
+                let yGrid = d3.axisLeft(medalScale)
+                              .tickSize(-width-margins)
+                              .tickFormat("");
+
+                let tickers = obj.append('g')
+                                 .append("id", "tickers");
+
+
+                tickers.append('g')
+                        .attr("class", "tickerss")
+                        .attr("transform", `translate(20, 20)`)
+                        .call(y);
+
+                // tickers.append('g')
+                //        .attr("class", "y")
+                //        .attr("transform", `translate(${margins}, ${margins})`)
+                //        .call(y);
+                //
+                // tickers.append('g')
+                //        .attr("class", "yGrid")
+                //        .attr("transform", `translate(${margins}, ${margins})`)
+                //        .call(yGrid);
+
+            })
+
+        </script>
+
+
+    </div>
+
 </body>
 </html>
