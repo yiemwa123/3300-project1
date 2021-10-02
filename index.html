@@ -15,6 +15,16 @@
             const width = 650;
             const height = 500;
             const margins = 20;
+            let obj = d3.select('svg#graph1');
+            let tickers = obj.append('g')
+                             .append("id", "tickers");
+
+
+
+            let chart = obj.append('g')
+                           .attr("id", "chart")
+                           .attr("transform", `translate(20, 20)`)
+                           .style("background-color", "black");
 
 
             d3.csv("athletes.csv", d3.autoType).then( (data) => {
@@ -28,7 +38,6 @@
                     }
                 })
 
-                let obj = d3.select('svg#graph1');
                 obj.attr('width', width)
                    .attr('height', height);
 
@@ -38,26 +47,17 @@
                 let maxSilver = d3.max(data, (d) => {return Math.max(d.silver)});
                 let maxBronze = d3.max(data, (d) => {return Math.max(d.bronze)});
 
-                let medalExtent = [0, Math.max(maxGold, maxSilver, maxBronze)];
+                const medalExtent = [0, Math.max(maxGold, maxSilver, maxBronze)];
 
-                let heighScale = d3.scaleLinear().domain(heightExtent).range(margins, width-margins);
-                let medalScale = d3.scaleLinear().domain(medalExtent).range(height-margins, margins);
-
-                let chart = obj.append('g')
-                               .attr("id", "chart")
-                               .attr("tranform", `translate(20, 20)`)
-                               .style("background-color", "black");
-
-
+                let heighScale = d3.scaleLinear().domain(heightExtent).range([margins, width-margins]);
+                const medalScale = d3.scaleLinear().domain(medalExtent).range([height-margins, margins]);
 
 
                 let y = d3.axisLeft(medalScale);
                 let yGrid = d3.axisLeft(medalScale)
-                              .tickSize(-width-margins)
+                              .tickSize(-width-5)
                               .tickFormat("");
 
-                let tickers = obj.append('g')
-                                 .append("id", "tickers");
 
 
                 tickers.append('g')
@@ -65,15 +65,14 @@
                         .attr("transform", `translate(20, 20)`)
                         .call(y);
 
-                // tickers.append('g')
-                //        .attr("class", "y")
-                //        .attr("transform", `translate(${margins}, ${margins})`)
-                //        .call(y);
+                tickers.append('g')
+                       .attr("transform", `translate(20, 20)`)
+                       .call(y)
                 //
-                // tickers.append('g')
-                //        .attr("class", "yGrid")
-                //        .attr("transform", `translate(${margins}, ${margins})`)
-                //        .call(yGrid);
+                tickers.append('g')
+                       .attr("class", "yGrid")
+                       .attr("transform", `translate(${margins}, ${margins})`)
+                       .call(yGrid);
 
             })
 
