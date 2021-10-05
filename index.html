@@ -2,6 +2,15 @@
 <html lang="en"><meta charset="UTF-8">
 
 <head>
+    <style>
+        .yGrid line {
+            stroke: lightgrey;
+        }
+
+        .yGrid .domain {
+            display: none;
+        }
+    </style>
 
     <title>Project 1</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -9,25 +18,24 @@
 </head>
 
 <body>
-    <div><p>Graph 1 </p><svg id="graph1"></svg>
+    <div style = "margin-left: 50px;"><p>Graph 1 </p><svg id="graph1" style = "margin-left: 50px;"></svg>
 
         <script>
             const width = 650;
             const height = 500;
-            const margins = 20;
-            let obj = d3.select('svg#graph1');
-            let tickers = obj.append('g')
-                             .append("id", "tickers");
+            const margins = 30;
+            const chartH = 440;
+            const chartW = 590;
 
-
-
-            let chart = obj.append('g')
-                           .attr("id", "chart")
-                           .attr("transform", `translate(20, 20)`)
-                           .style("background-color", "black");
 
 
             d3.csv("athletes.csv", d3.autoType).then( (data) => {
+
+                let obj = d3.select('svg#graph1');
+
+                //left
+                let tickers = obj.append('g')
+                                 .attr("id", "tickers");
 
                 let medalData = [];
 
@@ -49,30 +57,79 @@
 
                 const medalExtent = [0, Math.max(maxGold, maxSilver, maxBronze)];
 
-                let heighScale = d3.scaleLinear().domain(heightExtent).range([margins, width-margins]);
-                const medalScale = d3.scaleLinear().domain(medalExtent).range([height-margins, margins]);
+                const heightScale = d3.scaleLinear().domain(heightExtent).range([0, width-2*margins]);
+                const medalScale = d3.scaleLinear().domain(medalExtent).range([height-2*margins, 0]);
 
+                console.log(heightExtent);
+                //Calculate
+
+
+                //Y Axis
 
                 let y = d3.axisLeft(medalScale);
                 let yGrid = d3.axisLeft(medalScale)
-                              .tickSize(-width-5)
-                              .tickFormat("");
+                              .tickFormat("")
+                              .tickSize(-width + margins);
 
 
 
                 tickers.append('g')
                         .attr("class", "tickerss")
-                        .attr("transform", `translate(20, 20)`)
+                        .attr("transform", `translate(25, 30)`)
                         .call(y);
 
                 tickers.append('g')
-                       .attr("transform", `translate(20, 20)`)
-                       .call(y)
-                       
+                       .attr("class", "yGrid")
+                       .attr("transform", `translate(25, 30)`)
+                       .call(yGrid);
+
+                //X Axis
+                let x = d3.axisBottom(heightScale);
+                let xGrid = d3.axisBottom(heightScale)
+                              .tickFormat("")
+                              .tickSize(-height + margins);
+
+                tickers.append('g')
+                        .attr("class", "tickerss")
+                        .attr("transform", `translate(30, 480)`)
+                        .call(x);
+
                 tickers.append('g')
                        .attr("class", "yGrid")
-                       .attr("transform", `translate(${margins}, ${margins})`)
-                       .call(yGrid);
+                       .attr("transform", `translate(30, 480)`)
+                       .call(xGrid);
+
+                //Chart Area
+                let chart = obj.append('g')
+                               .attr("id", "chart")
+                               .attr("transform", `translate(30, 30)`)
+                               .style("fill", "black");
+
+                //Circles
+
+                function jitter() {
+                    return 0;
+                }
+                console.log(medalData);
+
+                const medType = ["gold", 'silver', 'bronze'];
+                const medCol = ['gold', 'silver', '#CD7F32'];
+
+                medalData.forEach((d) => {
+                    medType.forEach((n, i) => {
+                        if (d[n] > 0) {
+                            chart.append("circle")
+                                 .attr('cx', heightScale(d.height))
+                                 .attr("cy", medalScale(d[n]))
+                                 .attr('r', 5)
+                                 .attr('opacity', 0.8)
+                                 .style('fill', medCol[i]);
+                        }
+                    });
+
+
+                });
+
 
             })
 
