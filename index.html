@@ -20,6 +20,11 @@
 <body>
     <div style = "margin-left: 50px;"><p>Graph 1 </p><svg id="graph1" style = "margin-left: 50px;"></svg>
 
+
+
+    <svg id="graph2" width="650" height="500"></svg>
+
+
         <script>
             const width = 650;
             const height = 500;
@@ -57,7 +62,7 @@
 
                 const medalExtent = [0, Math.max(maxGold, maxSilver, maxBronze)];
 
-                const heightScale = d3.scaleLinear().domain(heightExtent).range([0, width-2*margins]);
+                let heightScale = d3.scaleLinear().domain(heightExtent).range([0, width-2*margins]);
                 const medalScale = d3.scaleLinear().domain(medalExtent).range([height-2*margins, 0]);
 
                 console.log(heightExtent);
@@ -129,6 +134,142 @@
 
 
                 });
+
+
+
+
+                let maleSportData=[];
+
+                let femaleSportData=[];
+
+
+                function selectedSport(string){
+                  if (string==='gymnastics' || string==='basketball'
+                  || string==='shooting'
+                  || string==='weightlifting'
+                  || string==='badminton'
+                  || string==='sailing'){
+                    return true;
+                  } else{
+                    return false
+                  }
+                };
+
+                medalData.forEach((d)=>{
+                  if (d.sex==='female' && selectedSport(d.sport)===true){
+                    femaleSportData.push(d);
+                  };
+
+                  if (d.sex==='male' && selectedSport(d.sport)===true){
+                    maleSportData.push(d);
+                  };
+
+                });
+
+
+
+
+
+
+
+
+
+
+
+              // const gymnastics=data.filter(d=>{return d.sport==='gymnastics';})
+              // const basketball=data.filter(d=>{return d.sport==='basketball';})
+              // const shooting=data.filter(d=>{return d.sport==='shooting';})
+              // const weightlifting=data.filter(d=>{return d.sport==='weightlifting';})
+              // const badminton=data.filter(d=>{return d.sport==='badminton';})
+              // const sailing=data.filter(d=>{return d.sport==='sailing';})
+
+              let sportss=['gymnastics', "basketball", "shooting", "weightlifting", "badminton", "sailing"];
+
+
+              let medalMedians=[];
+
+              let newData=[];
+
+
+              sportss.forEach(string=>{
+
+                let dataa=data.filter(d=>{return d.sport===string})
+
+
+                let goldData=dataa.filter(d=>{return d.gold>0});
+
+                let silverData=dataa.filter(d=>{return d.silver>0});
+
+                let bronzeData=dataa.filter(d=>{return d.bronze>0});
+
+
+                let goldMedian=d3.median(goldData, d=>d.height);
+
+                let silverMedian=d3.median(silverData, d=>d.height);
+                let bronzeMedian=d3.median(bronzeData, d=>d.height);
+
+                let object=new Object();
+
+                object.sport=string;
+
+                object.gold=goldMedian;
+                object.silver=silverMedian;
+                object.bronze=bronzeMedian;
+
+
+
+                newData.push(object);
+
+                medalMedians.push(goldMedian);
+                medalMedians.push(silverMedian);
+                medalMedians.push(bronzeMedian);
+
+
+              });
+
+
+
+
+            const femaleMaxMedian=d3.max(medalMedians);
+
+            console.log(femaleMaxMedian);
+            heightScale = d3.scaleLinear().domain([0,femaleMaxMedian]).range([900,0]);
+            obj = d3.select('svg#graph2');
+
+
+
+
+            // const sports=d3.map(sportss);
+            const sportScale=d3.scaleBand().domain(sportss).range([50, 800]).padding(0.05);
+
+
+
+            newData.forEach(d=>{
+
+
+              obj.append('rect').attr('fill', 'gold').attr("x", sportScale(d.sport)-sportScale.bandwidth()/3).attr("y", heightScale(d.gold))
+              .attr("height",heightScale(0)-heightScale(d.gold)).attr("width", sportScale.bandwidth()/3);
+              obj.append('rect').attr('fill', 'silver').attr("x", sportScale(d.sport)).attr("y", heightScale(d.silver)).attr("height",heightScale(0)-heightScale(d.silver)).attr("width", sportScale.bandwidth()/3)
+              obj.append('rect').attr('fill', '#CD7F32').attr("x", sportScale(d.sport)+sportScale.bandwidth()/3).attr("y", heightScale(d.bronze)).attr("height",heightScale(0)-heightScale(d.bronze)).attr("width", sportScale.bandwidth()/3)
+
+
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             })
