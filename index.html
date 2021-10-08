@@ -24,6 +24,11 @@
 
     <svg id="graph2" width="650" height="500"></svg>
 
+    <svg id="graph3" width="650" height="500"></svg>
+
+
+    <svg id="graph4" width="650" height="500"></svg>
+
 
         <script>
             const width = 650;
@@ -136,7 +141,6 @@
                 });
 
 
-                //Columns
 
 
                 let maleSportData=[];
@@ -151,6 +155,9 @@
                   || string==='badminton'
                   || string==='sailing')};
 
+
+
+
                 medalData.forEach((d)=>{
                   if (d.sex==='female' && selectedSport(d.sport)){
                     femaleSportData.push(d);
@@ -164,31 +171,63 @@
 
 
 
-              let sportss=['gymnastics', "basketball", "shooting", "weightlifting", "badminton", "sailing"];
+            // generate the svg for both genders, female, male
+
+            let svg2 = d3.select('svg#graph2');
+            let svg3 = d3.select('svg#graph3');
+            let svg4 = d3.select('svg#graph4');
 
 
+
+
+
+            //function for generating bar graphs
+            function medianHeight(dataset, svg){
+
+
+
+
+              // save medal medians to find extent
               let medalMedians=[];
 
+
+
+              // create new dataset that saves median height for each medal category for each sport
               let newData=[];
 
 
-              sportss.forEach(string=>{
+              let sports_array=['gymnastics', "basketball", "shooting", "weightlifting", "badminton", "sailing"];
 
-                let dataa=data.filter(d=>{return d.sport===string})
-
-
-                let goldData=dataa.filter(d=>{return d.gold>0});
-
-                let silverData=dataa.filter(d=>{return d.silver>0});
-
-                let bronzeData=dataa.filter(d=>{return d.bronze>0});
+              sports_array.forEach(string=>{
 
 
+
+
+                // get the relevant sports
+
+                let sport_data=dataset.filter(d=>{return d.sport===string});
+
+
+
+
+                // separate gold, silver, and bronze data
+                let goldData=sport_data.filter(d=>{return d.gold>0});
+
+                let silverData=sport_data.filter(d=>{return d.silver>0});
+
+                let bronzeData=sport_data.filter(d=>{return d.bronze>0});
+
+
+
+
+                // find median height for gold silver and bronze
                 let goldMedian=d3.median(goldData, d=>d.height);
-
                 let silverMedian=d3.median(silverData, d=>d.height);
                 let bronzeMedian=d3.median(bronzeData, d=>d.height);
 
+
+
+                // store info by creating object and storing info there
                 let object=new Object();
 
                 object.sport=string;
@@ -198,9 +237,12 @@
                 object.bronze=bronzeMedian;
 
 
-
+                // add it to the dataset
                 newData.push(object);
 
+
+
+                // collect all the medians
                 medalMedians.push(goldMedian);
                 medalMedians.push(silverMedian);
                 medalMedians.push(bronzeMedian);
@@ -211,103 +253,83 @@
 
 
 
-             let newMargin = 40;
+
+            let newMargin = 40;
 
 
 
 
-            const allMaxMedian=d3.max(medalMedians);
-            const ChartMin = 1.4;
+           const maxMedian=d3.max(medalMedians);
+           const ChartMin = 1.4;
 
-            heightScale = d3.scaleLinear().domain([ChartMin,allMaxMedian]).range([420,0]);
+           heightScale = d3.scaleLinear().domain([ChartMin,maxMedian]).range([420,0]);
 
-            obj2 = d3.select('svg#graph2');
+           let axis = svg.append('g').attr('id', 'yAxis2');
+           let yAxis = d3.axisLeft(heightScale);
 
-            let axis2 = obj2.append('g').attr('id', 'yAxis2');
-            let yAxis2 = d3.axisLeft(heightScale);
+           axis.append('g')
+                 .attr('class', "yAxis")
+                 .attr("transform", `translate(30, 40)`)
+                 .call(yAxis);
 
-            axis2.append('g')
-                  .attr('class', "yAxis")
-                  .attr("transform", `translate(30, 40)`)
-                  .call(yAxis2);
+           let yGrid = d3.axisLeft(heightScale)
+                         .tickFormat('')
+                         .tickSize(-740);
 
-            let yGrid2 = d3.axisLeft(heightScale)
-                          .tickFormat('')
-                          .tickSize(-740);
-
-            axis2.append('g')
-                  .attr('class', "yGrid")
-                  .attr("transform", `translate(30, 40)`)
-                  .call(yGrid2);
+           axis.append('g')
+                 .attr('class', "yGrid")
+                 .attr("transform", `translate(30, 40)`)
+                 .call(yGrid);
 
 
-            // const sports=d3.map(sportss);
-            const sportScale=d3.scaleBand().domain(sportss).range([0, 570]).padding(0.15);
+           // const sports=d3.map(sportss);
+           const sportScale=d3.scaleBand().domain(sports_array).range([0, 570]).padding(0.15);
 
-            let x2 = d3.axisBottom(sportScale);
-            let xGrid2 = d3.axisBottom(sportScale)
-                          .tickFormat("")
-                          .tickSize(-height + newMargin);
+           let x = d3.axisBottom(sportScale);
+           let xGrid = d3.axisBottom(sportScale)
+                         .tickFormat("")
+                         .tickSize(-height + newMargin);
 
-            axis2.append('g')
-                    .attr("class", "tickerss")
-                    .attr("transform", `translate(40, 470)`)
-                    .call(x2);
-
-            axis2.append('g')
-                   .attr("class", "yGrid")
+           axis.append('g')
+                   .attr("class", "tickerss")
                    .attr("transform", `translate(40, 470)`)
-                   .call(xGrid2);
+                   .call(x);
 
-            let chartArea2 = obj2.append('g')
-                               .attr("id", "chart2")
-                               .attr("transform", `translate(40, 40)`);
+           axis.append('g')
+                  .attr("class", "yGrid")
+                  .attr("transform", `translate(40, 470)`)
+                  .call(xGrid);
 
-            newData.forEach(d=>{
+           let chartArea = svg.append('g')
+                              .attr("id", "chart2")
+                              .attr("transform", `translate(40, 40)`);
 
-              chartArea2.append('rect').attr('fill', 'gold').attr("x", sportScale(d.sport)).attr("y", heightScale(d.gold))
-              .attr("height",heightScale(ChartMin)-heightScale(d.gold)).attr("width", sportScale.bandwidth()/3);
-              chartArea2.append('rect').attr('fill', 'silver').attr("x", sportScale(d.sport)+sportScale.bandwidth()/3).attr("y", heightScale(d.silver)).attr("height",heightScale(ChartMin)-heightScale(d.silver)).attr("width", sportScale.bandwidth()/3)
-              chartArea2.append('rect').attr('fill', '#CD7F32').attr("x", sportScale(d.sport)+sportScale.bandwidth()*2/3).attr("y", heightScale(d.bronze)).attr("height",heightScale(ChartMin)-heightScale(d.bronze)).attr("width", sportScale.bandwidth()/3)
+           newData.forEach(d=>{
 
-
-            })
-
-            //female
-
-            sportss.forEach(string=>{
-
-              let dataa=femaleSportData.filter(d=>{return d.sport===string})
+             chartArea.append('rect').attr('fill', 'gold').attr("x", sportScale(d.sport)).attr("y", heightScale(d.gold))
+             .attr("height",heightScale(ChartMin)-heightScale(d.gold)).attr("width", sportScale.bandwidth()/3);
+             chartArea.append('rect').attr('fill', 'silver').attr("x", sportScale(d.sport)+sportScale.bandwidth()/3).attr("y", heightScale(d.silver)).attr("height",heightScale(ChartMin)-heightScale(d.silver)).attr("width", sportScale.bandwidth()/3)
+             chartArea.append('rect').attr('fill', '#CD7F32').attr("x", sportScale(d.sport)+sportScale.bandwidth()*2/3).attr("y", heightScale(d.bronze)).attr("height",heightScale(ChartMin)-heightScale(d.bronze)).attr("width", sportScale.bandwidth()/3)
 
 
-              let goldData=dataa.filter(d=>{return d.gold>0});
+           });
 
-              let silverData=dataa.filter(d=>{return d.silver>0});
-
-              let bronzeData=dataa.filter(d=>{return d.bronze>0});
+       };
 
 
-              let goldMedian=d3.median(goldData, d=>d.height);
-
-              let silverMedian=d3.median(silverData, d=>d.height);
-              let bronzeMedian=d3.median(bronzeData, d=>d.height);
-
-              let object=new Object();
-
-              object.sport=string;
-
-              object.gold=goldMedian;
-              object.silver=silverMedian;
-              object.bronze=bronzeMedian;
+       medianHeight(medalData, svg2);
+       medianHeight(femaleSportData, svg3);
+       medianHeight(maleSportData, svg4);
 
 
 
-              femaleSportData.push(object);
 
-              medalMedians.push(goldMedian);
-              medalMedians.push(silverMedian);
-              medalMedians.push(bronzeMedian);
-            });
+
+
+
+
+
+     });
 
 
 
@@ -321,12 +343,6 @@
 
 
 
-
-
-
-
-
-        })
 
         </script>
 
