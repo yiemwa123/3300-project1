@@ -49,10 +49,15 @@
 
                 let medalData = [];
 
+                let nonMedalData=[];
+
+
                 data.forEach(d => {
                     //Filter out non-medalists
                     if(d.silver + d.gold + d.bronze > 0) {
                         medalData.push(d);
+                    } else{
+                      nonMedalData.push(d);
                     }
                 })
 
@@ -165,6 +170,22 @@
 
                   if (d.sex==='male' && selectedSport(d.sport)){
                     maleSportData.push(d);
+                  };
+
+                });
+
+                let nonMaleSportData=[];
+
+                let nonFemaleSportData=[];
+
+
+                nonMedalData.forEach((d)=>{
+                  if (d.sex==='female' && selectedSport(d.sport)){
+                    nonFemaleSportData.push(d);
+                  };
+
+                  if (d.sex==='male' && selectedSport(d.sport)){
+                    nonMaleSportData.push(d);
                   };
 
                 });
@@ -318,8 +339,11 @@
 
 
        medianHeight(medalData, svg2);
+       svg2.append("text").text("Median height for both genders").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold');
        medianHeight(femaleSportData, svg3);
+       svg3.append("text").text("Median height for female athletes").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold');
        medianHeight(maleSportData, svg4);
+       svg4.append("text").text("Median height for male athletes").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold');
 
 
 
