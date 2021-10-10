@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <div style = "margin-left: 50px;"><p>Graph 1 </p><svg id="graph1" style = "margin-left: 50px;"></svg>
+    <div style = "margin-left: 50px;"><p>Graph 1 </p><svg id="graph1"></svg>
 
 
 
@@ -54,10 +54,11 @@
 
                 data.forEach(d => {
                     //Filter out non-medalists
-                    if(d.silver + d.gold + d.bronze > 0) {
+                    if(d.silver + d.gold + d.bronze > 0 && d.height>0) {
                         medalData.push(d);
-                    } else{
+                    } else if (d.height>0){
                       nonMedalData.push(d);
+                    } else{
                     }
                 })
 
@@ -72,17 +73,61 @@
 
                 const medalExtent = [0, Math.max(maxGold, maxSilver, maxBronze)];
 
-                let heightScale = d3.scaleLinear().domain(heightExtent).range([0, width-2*margins]);
-                const medalScale = d3.scaleLinear().domain(medalExtent).range([height-2*margins, 0]);
+                // let heightScale = d3.scaleLinear().domain(heightExtent).range([0, width-2*margins]);
+                // const medalScale = d3.scaleLinear().domain(medalExtent).range([height-2*margins, 0]);
+
+                console.log(heightExtent);
+
+                let heightScale = d3.scaleLinear().domain([heightExtent[0]-0.05, heightExtent[1]+0.05]).range([height-2*margins, 0]);
+                const medalScale = d3.scaleLinear().domain(medalExtent).range([0, width-2*margins]);
+
 
                 console.log(heightExtent);
                 //Calculate
 
 
+                // //Y Axis
+                //
+                // let y = d3.axisLeft(medalScale).tickFormat(d3.format('.0f')).ticks(6);
+                // let yGrid = d3.axisLeft(medalScale)
+                //               .tickFormat("")
+                //               .tickSize(-width + margins);
+                //
+                //
+                //
+                // tickers.append('g')
+                //         .attr("class", "tickerss")
+                //         .attr("transform", `translate(25, 30)`)
+                //         .call(y);
+                //
+                // tickers.append('g')
+                //        .attr("class", "yGrid")
+                //        .attr("transform", `translate(25, 30)`)
+                //        .call(yGrid);
+                //
+                // //X Axis
+                // let x = d3.axisBottom(heightScale);
+                // let xGrid = d3.axisBottom(heightScale)
+                //               .tickFormat("")
+                //               .tickSize(-height + margins);
+                //
+                // tickers.append('g')
+                //         .attr("class", "tickerss")
+                //         .attr("transform", `translate(30, 480)`)
+                //         .call(x);
+                //
+                // tickers.append('g')
+                //        .attr("class", "yGrid")
+                //        .attr("transform", `translate(30, 480)`)
+                //        .call(xGrid);
+
+
+
+
                 //Y Axis
 
-                let y = d3.axisLeft(medalScale).tickFormat(d3.format('.0f')).ticks(6);
-                let yGrid = d3.axisLeft(medalScale)
+                let y = d3.axisLeft(heightScale);
+                let yGrid = d3.axisLeft(heightScale)
                               .tickFormat("")
                               .tickSize(-width + margins);
 
@@ -99,19 +144,19 @@
                        .call(yGrid);
 
                 //X Axis
-                let x = d3.axisBottom(heightScale);
-                let xGrid = d3.axisBottom(heightScale)
+                let x = d3.axisBottom(medalScale).tickFormat(d3.format('.0f')).ticks(6);
+                let xGrid = d3.axisBottom(medalScale)
                               .tickFormat("")
-                              .tickSize(-height + margins);
+                              .tickSize(-height + 2*margins);
 
                 tickers.append('g')
                         .attr("class", "tickerss")
-                        .attr("transform", `translate(30, 480)`)
+                        .attr("transform", `translate(30, 470)`)
                         .call(x);
 
                 tickers.append('g')
                        .attr("class", "yGrid")
-                       .attr("transform", `translate(30, 480)`)
+                       .attr("transform", `translate(30, 470)`)
                        .call(xGrid);
 
                 //Chart Area
@@ -123,27 +168,48 @@
                 //Circles
 
                 function jitter() {
-                    return 0;
+                    return Math.random()*20-10;
                 }
                 console.log(medalData);
 
                 const medType = ["gold", 'silver', 'bronze'];
                 const medCol = ['gold', 'silver', '#CD7F32'];
 
+                // medalData.forEach((d) => {
+                //     medType.forEach((n, i) => {
+                //         if (d[n] > 0) {
+                //             chart.append("circle")
+                //                  .attr('cx', heightScale(d.height))
+                //                  .attr("cy", medalScale(d[n])+jitter())
+                //                  .attr('r', 5)
+                //                  .attr('opacity', 0.6)
+                //                  .style('fill', medCol[i]);
+                //                  // .style('stroke-width',0.5)
+                //                  // .style('stroke', 'black');
+                //         }
+                //     });
+                //
+                //
+                // });
+
+
                 medalData.forEach((d) => {
                     medType.forEach((n, i) => {
                         if (d[n] > 0) {
                             chart.append("circle")
-                                 .attr('cx', heightScale(d.height))
-                                 .attr("cy", medalScale(d[n]))
+                                 .attr('cx', d[n] > 2 ? medalScale(d[n]) : medalScale(d[n])+jitter())
+                                 .attr("cy", heightScale(d.height))
                                  .attr('r', 5)
-                                 .attr('opacity', 0.8)
+                                 .attr('opacity', 0.7)
                                  .style('fill', medCol[i]);
+                                 // .style('stroke-width',0.5)
+                                 // .style('stroke', 'black');
                         }
                     });
 
 
                 });
+
 
 
 
@@ -163,7 +229,7 @@
 
 
 
-                medalData.forEach((d)=>{
+                data.forEach((d)=>{
                   if (d.sex==='female' && selectedSport(d.sport)){
                     femaleSportData.push(d);
                   };
@@ -178,17 +244,17 @@
 
                 let nonFemaleSportData=[];
 
-
-                nonMedalData.forEach((d)=>{
-                  if (d.sex==='female' && selectedSport(d.sport)){
-                    nonFemaleSportData.push(d);
-                  };
-
-                  if (d.sex==='male' && selectedSport(d.sport)){
-                    nonMaleSportData.push(d);
-                  };
-
-                });
+                //
+                // nonMedalData.forEach((d)=>{
+                //   if (d.sex==='female' && selectedSport(d.sport)){
+                //     nonFemaleSportData.push(d);
+                //   };
+                //
+                //   if (d.sex==='male' && selectedSport(d.sport)){
+                //     nonMaleSportData.push(d);
+                //   };
+                //
+                // });
 
 
 
@@ -238,6 +304,9 @@
 
                 let bronzeData=sport_data.filter(d=>{return d.bronze>0});
 
+                let nonMedal=sport_data.filter(d=>{return (d.gold===0 && d.silver===0 && d.bronze===0);});
+
+
 
 
 
@@ -245,6 +314,12 @@
                 let goldMedian=d3.median(goldData, d=>d.height);
                 let silverMedian=d3.median(silverData, d=>d.height);
                 let bronzeMedian=d3.median(bronzeData, d=>d.height);
+
+                let nonMedalMedian=d3.median(nonMedal,d=>d.height);
+
+
+
+
 
 
 
@@ -256,6 +331,7 @@
                 object.gold=goldMedian;
                 object.silver=silverMedian;
                 object.bronze=bronzeMedian;
+                object.nonmedal=nonMedalMedian;
 
 
                 // add it to the dataset
@@ -267,6 +343,7 @@
                 medalMedians.push(goldMedian);
                 medalMedians.push(silverMedian);
                 medalMedians.push(bronzeMedian);
+                medalMedians.push(nonMedalMedian);
 
 
               });
@@ -275,7 +352,10 @@
 
 
 
-            let newMargin = 40;
+
+
+
+            let newMargin = 66;
 
 
 
@@ -283,7 +363,7 @@
            const maxMedian=d3.max(medalMedians);
            const ChartMin = 1.4;
 
-           heightScale = d3.scaleLinear().domain([ChartMin,maxMedian]).range([420,0]);
+           heightScale = d3.scaleLinear().domain([ChartMin,maxMedian+0.05]).range([420,0]);
 
            let axis = svg.append('g').attr('id', 'yAxis2');
            let yAxis = d3.axisLeft(heightScale);
@@ -328,9 +408,10 @@
            newData.forEach(d=>{
 
              chartArea.append('rect').attr('fill', 'gold').attr("x", sportScale(d.sport)).attr("y", heightScale(d.gold))
-             .attr("height",heightScale(ChartMin)-heightScale(d.gold)).attr("width", sportScale.bandwidth()/3);
-             chartArea.append('rect').attr('fill', 'silver').attr("x", sportScale(d.sport)+sportScale.bandwidth()/3).attr("y", heightScale(d.silver)).attr("height",heightScale(ChartMin)-heightScale(d.silver)).attr("width", sportScale.bandwidth()/3)
-             chartArea.append('rect').attr('fill', '#CD7F32').attr("x", sportScale(d.sport)+sportScale.bandwidth()*2/3).attr("y", heightScale(d.bronze)).attr("height",heightScale(ChartMin)-heightScale(d.bronze)).attr("width", sportScale.bandwidth()/3)
+             .attr("height",heightScale(ChartMin)-heightScale(d.gold)).attr("width", sportScale.bandwidth()/4);
+             chartArea.append('rect').attr('fill', 'silver').attr("x", sportScale(d.sport)+sportScale.bandwidth()/4).attr("y", heightScale(d.silver)).attr("height",heightScale(ChartMin)-heightScale(d.silver)).attr("width", sportScale.bandwidth()/4)
+             chartArea.append('rect').attr('fill', '#CD7F32').attr("x", sportScale(d.sport)+sportScale.bandwidth()*2/4).attr("y", heightScale(d.bronze)).attr("height",heightScale(ChartMin)-heightScale(d.bronze)).attr("width", sportScale.bandwidth()/4)
+             chartArea.append('rect').attr('fill', 'grey').attr("x", sportScale(d.sport)+sportScale.bandwidth()*3/4).attr("y", heightScale(d.nonmedal)).attr("height",heightScale(ChartMin)-heightScale(d.nonmedal)).attr("width", sportScale.bandwidth()/4)
 
 
            });
@@ -338,12 +419,12 @@
        };
 
 
-       medianHeight(medalData, svg2);
-       svg2.append("text").text("Median height for both genders").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold');
+       medianHeight(data, svg2);
+       svg2.append("text").text("Median height for both genders").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
        medianHeight(femaleSportData, svg3);
-       svg3.append("text").text("Median height for female athletes").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold');
+       svg3.append("text").text("Median height for female athletes").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
        medianHeight(maleSportData, svg4);
-       svg4.append("text").text("Median height for male athletes").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold');
+       svg4.append("text").text("Median height for male athletes").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
 
 
 
