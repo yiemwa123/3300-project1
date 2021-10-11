@@ -29,6 +29,8 @@
 
     <svg id="graph4" width="650" height="500"></svg>
 
+    <svg id="graph5" width="650" height="500"></svg>
+
 
         <script>
             const width = 650;
@@ -264,6 +266,8 @@
             let svg3 = d3.select('svg#graph3');
             let svg4 = d3.select('svg#graph4');
 
+            let svg5 = d3.select('svg#graph5');
+
 
 
 
@@ -297,6 +301,8 @@
 
 
 
+
+
                 // separate gold, silver, and bronze data
                 let goldData=sport_data.filter(d=>{return d.gold>0});
 
@@ -305,6 +311,8 @@
                 let bronzeData=sport_data.filter(d=>{return d.bronze>0});
 
                 let nonMedal=sport_data.filter(d=>{return (d.gold===0 && d.silver===0 && d.bronze===0);});
+
+
 
 
 
@@ -405,6 +413,10 @@
                               .attr("id", "chart2")
                               .attr("transform", `translate(40, 40)`);
 
+
+
+
+
            newData.forEach(d=>{
 
              chartArea.append('rect').attr('fill', 'gold').attr("x", sportScale(d.sport)).attr("y", heightScale(d.gold))
@@ -425,6 +437,109 @@
        svg3.append("text").text("Median height for female athletes").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
        medianHeight(maleSportData, svg4);
        svg4.append("text").text("Median height for male athletes").attr("x", 250).attr("y", 20).style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
+
+
+
+       let extent=d3.extent(nonMedalData,d=> d.height)
+
+       heightScale = d3.scaleLinear().domain(extent).range([420,0]);
+
+       let sports_array=['gymnastics', "basketball", "shooting", "weightlifting", "badminton", "sailing"];
+
+       let axis = svg5.append('g').attr('id', 'yAxis2');
+       let yAxis = d3.axisLeft(heightScale);
+
+       axis.append('g')
+             .attr('class', "yAxis")
+             .attr("transform", `translate(30, 40)`)
+             .call(yAxis);
+
+       yGrid = d3.axisLeft(heightScale)
+                     .tickFormat('')
+                     .tickSize(-740);
+
+       axis.append('g')
+             .attr('class', "yGrid")
+             .attr("transform", `translate(30, 40)`)
+             .call(yGrid);
+
+
+       // const sports=d3.map(sportss);
+       const sportScale=d3.scaleBand().domain(sports_array).range([0, 570]);
+
+       x = d3.axisBottom(sportScale);
+       xGrid = d3.axisBottom(sportScale)
+                     .tickFormat("")
+                     .tickSize(-height + 66);
+
+       axis.append('g')
+               .attr("class", "tickerss")
+               .attr("transform", `translate(40, 470)`)
+               .call(x);
+
+       axis.append('g')
+              .attr("class", "yGrid")
+              .attr("transform", `translate(40, 470)`)
+              .call(xGrid);
+
+       let chartArea = svg5.append('g')
+                          .attr("id", "chart2")
+                          .attr("transform", `translate(40, 40)`);
+
+
+
+
+       nonMedalData.forEach(d=>{
+
+         if (sports_array.includes(d.sport)){
+
+
+                        chartArea.append('circle').attr('fill', 'black').attr("cx", sportScale(d.sport)+sportScale.bandwidth()/4+Math.random()*20-10).attr("cy", heightScale(d.height)+Math.random()*10-5).attr('r', 2);
+
+                        // .style('stroke-width',0.5)
+
+
+
+
+         }
+
+
+
+      })
+
+
+      // let goldMax=d3.max(medalData, d=>(d.gold);
+      // let silverMax=d3.max(medalData, d=>(d.silver);
+      // let bronzeMax=d3.max(medalData, d=>(d.bronze);
+      //
+      //
+      // let medalMax=d3.max([goldMax, silverMax, bronzeMax]);
+
+
+      medalData.forEach(d=>{
+
+        if (sports_array.includes(d.sport)){
+
+          medType.forEach((n, i) => {
+              if (d[n] > 0) {
+
+                       chartArea.append('circle').attr('fill', medCol[i]).attr("cx", sportScale(d.sport)+sportScale.bandwidth()*3/4+Math.random()*20-10).attr("cy", heightScale(d.height)+Math.random()*10-5).attr('r', d[n]*3)
+                       .style("opacity" , 0.75);
+
+                       // .style('stroke-width',0.5)
+                       // .style('stroke', 'black');
+              }
+          });
+
+        }
+
+
+
+     })
+
+
+
+
 
 
 
