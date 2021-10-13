@@ -210,7 +210,7 @@
 
                 });
 
-                legend2.append('rect').style('fill', 'grey').attr('x', 10).attr('y', 35*(4))
+                legend2.append('rect').style('fill', 'black').attr('x', 10).attr('y', 35*(4))
                 .attr("height",10).attr("width", 10);
                 legend2.append("text").text("Non-medalist").attr('text-anchor', "start").attr('alignment-baseline', 'hanging').attr("x", 30).attr("y", 35*(4)).style('font-size', "12px").style('font-family', 'sans-serif');
 
@@ -385,7 +385,7 @@
              .attr("height",heightScale(ChartMin)-heightScale(d.gold)).attr("width", sportScale.bandwidth()/4);
              chartArea.append('rect').attr('fill', 'silver').attr("x", sportScale(d.sport)+sportScale.bandwidth()/4).attr("y", heightScale(d.silver)).attr("height",heightScale(ChartMin)-heightScale(d.silver)).attr("width", sportScale.bandwidth()/4)
              chartArea.append('rect').attr('fill', '#CD7F32').attr("x", sportScale(d.sport)+sportScale.bandwidth()*2/4).attr("y", heightScale(d.bronze)).attr("height",heightScale(ChartMin)-heightScale(d.bronze)).attr("width", sportScale.bandwidth()/4)
-             chartArea.append('rect').attr('fill', 'grey').attr("x", sportScale(d.sport)+sportScale.bandwidth()*3/4).attr("y", heightScale(d.nonmedal)).attr("height",heightScale(ChartMin)-heightScale(d.nonmedal)).attr("width", sportScale.bandwidth()/4)
+             chartArea.append('rect').attr('fill', 'black').attr("x", sportScale(d.sport)+sportScale.bandwidth()*3/4).attr("y", heightScale(d.nonmedal)).attr("height",heightScale(ChartMin)-heightScale(d.nonmedal)).attr("width", sportScale.bandwidth()/4)
            });
        };
 
