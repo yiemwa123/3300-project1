@@ -51,10 +51,10 @@
 
             d3.csv("athletes.csv", d3.autoType).then( (data) => {
 
-                let obj = d3.select('svg#graph1');
+                let svg1 = d3.select('svg#graph1');
 
                 //left
-                let tickers = obj.append('g')
+                let tickers = svg1.append('g')
                                  .attr("id", "tickers");
 
                 let medalData = [];
@@ -71,7 +71,7 @@
                     }
                 })
 
-                obj.attr('width', width)
+                svg1.attr('width', width)
                    .attr('height', height);
 
                 let heightExtent = d3.extent(medalData, d=> d.height);
@@ -100,12 +100,12 @@
 
                 tickers.append('g')
                         .attr("class", "tickerss")
-                        .attr("transform", `translate(25, 30)`)
+                        .attr("transform", `translate(45, 20)`)
                         .call(y);
 
                 tickers.append('g')
                        .attr("class", "yGrid")
-                       .attr("transform", `translate(25, 30)`)
+                       .attr("transform", `translate(45, 20)`)
                        .call(yGrid);
 
                 //X Axis
@@ -116,19 +116,24 @@
 
                 tickers.append('g')
                         .attr("class", "tickerss")
-                        .attr("transform", `translate(30, 470)`)
+                        .attr("transform", `translate(50, 460)`)
                         .call(x);
 
                 tickers.append('g')
                        .attr("class", "yGrid")
-                       .attr("transform", `translate(30, 470)`)
+                       .attr("transform", `translate(50, 460)`)
                        .call(xGrid);
 
                 //Chart Area
-                let chart = obj.append('g')
+                let chart = svg1.append('g')
                                .attr("id", "chart")
-                               .attr("transform", `translate(30, 30)`)
+                               .attr("transform", `translate(50, 20)`)
                                .style("fill", "black");
+                svg1.append("text").text("Height (m)").attr('text-anchor', 'middle').style('font-size', "12px").style('font-weight', 'bold').style('font-family', 'sans-serif')
+                               .attr("transform", `translate(10,${height/2}) rotate(270)`);
+
+                svg1.append("text").text("Number of medals won").attr('text-anchor', 'middle').style('font-size', "12px").style('font-weight', 'bold').style('font-family', 'sans-serif')
+                              .attr("transform", `translate(${width/2},${height-5})`);
 
                 //Circles
 
@@ -194,7 +199,7 @@
 
                 });
 
-                obj.append("text").text("Individual height (m) vs number of medals won").attr("x", width/2).attr("y", 30).attr('text-anchor', "middle").style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
+                svg1.append("text").text("Individual height (m) vs number of medals won").attr("x", width/2).attr("y", 20).attr('text-anchor', "middle").style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
 
 
 
@@ -301,7 +306,7 @@
 
            axis.append('g')
                  .attr('class', "yAxis")
-                 .attr("transform", `translate(30, 40)`)
+                 .attr("transform", `translate(50, 40)`)
                  .call(yAxis);
 
            let yGrid = d3.axisLeft(heightScale)
@@ -310,7 +315,7 @@
 
            axis.append('g')
                  .attr('class', "yGrid")
-                 .attr("transform", `translate(30, 40)`)
+                 .attr("transform", `translate(50, 40)`)
                  .call(yGrid);
 
            // const sports=d3.map(sportss);
@@ -323,17 +328,17 @@
 
            axis.append('g')
                    .attr("class", "tickerss")
-                   .attr("transform", `translate(40, 470)`)
+                   .attr("transform", `translate(60, 470)`)
                    .call(x);
 
            axis.append('g')
                   .attr("class", "yGrid")
-                  .attr("transform", `translate(40, 470)`)
+                  .attr("transform", `translate(60, 470)`)
                   .call(xGrid);
 
            let chartArea = svg.append('g')
                               .attr("id", "chart2")
-                              .attr("transform", `translate(40, 40)`);
+                              .attr("transform", `translate(60, 40)`);
 
            newData.forEach(d=>{
              chartArea.append('rect').attr('fill', 'gold').attr("x", sportScale(d.sport)).attr("y", heightScale(d.gold))
@@ -348,6 +353,9 @@
        medianHeight(data, svg2);
        svg2.append("text").text("Median height (m) for both genders vs select sports").attr("x", width/2).attr("y", 30).attr('text-anchor', 'middle').style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
 
+       svg2.append("text").text("Height (m)").attr('text-anchor', 'middle').style('font-size', "12px").style('font-weight', 'bold').style('font-family', 'sans-serif')
+       .attr("transform", `translate(10,${height/2}) rotate(270)`);
+
        let extent=d3.extent(nonMedalData,d=> d.height)
 
        heightScale = d3.scaleLinear().domain([extent[0]+0.05,extent[1]+0.02]).range([420,0]);
@@ -359,7 +367,7 @@
 
        axis.append('g')
              .attr('class', "yAxis")
-             .attr("transform", `translate(30, 40)`)
+             .attr("transform", `translate(50, 40)`)
              .call(yAxis);
 
        yGrid = d3.axisLeft(heightScale)
@@ -368,7 +376,7 @@
 
        axis.append('g')
              .attr('class', "yGrid")
-             .attr("transform", `translate(30, 40)`)
+             .attr("transform", `translate(50, 40)`)
              .call(yGrid);
 
        // const sports=d3.map(sportss);
@@ -381,17 +389,19 @@
 
        axis.append('g')
                .attr("class", "tickerss")
-               .attr("transform", `translate(40, 470)`)
+               .attr("transform", `translate(60, 470)`)
                .call(x);
 
        axis.append('g')
               .attr("class", "yGrid")
-              .attr("transform", `translate(40, 470)`)
+              .attr("transform", `translate(60, 470)`)
               .call(xGrid);
 
        let chartArea = svg3.append('g')
                           .attr("id", "chart2")
-                          .attr("transform", `translate(40, 40)`);
+                          .attr("transform", `translate(60, 40)`);
+       svg3.append("text").text("Height (m)").attr('text-anchor', 'middle').style('font-size', "12px").style('font-weight', 'bold').style('font-family', 'sans-serif')
+                          .attr("transform", `translate(10,${height/2}) rotate(270)`);
 
 
        nonMedalData.forEach(d=>{
