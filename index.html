@@ -3,6 +3,9 @@
 
 <head>
     <style>
+        .graph{
+          margin-left: 30px;
+        }
         .yGrid line {
             stroke: lightgrey;
         }
@@ -18,22 +21,22 @@
 </head>
 
 <body>
-    <div id="graph">
+    <div class="graph">
       <svg id="graph1"></svg>
       <svg id="legend1" width="200" height="200"> </svg>
     </div>
 
 
-    <div id="graph">
+    <div class="graph">
       <svg id="graph2" width="650" height="500"></svg>
       <svg id="legend2" width="200" height="200"> </svg>
     </div>
 
 
 
-    <div id="graph">
+    <div class="graph">
       <svg id="graph3" width="650" height="500"></svg>
-      <svg id="legend3" width="200" height="200"> </svg>
+      <svg id="legend3" width="200" height="300"> </svg>
     </div>
 
 
@@ -156,7 +159,7 @@
 
                   legend1.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 25).attr("y", 35*(i+1)).style('font-size', "12px").style('font-family', 'sans-serif');
                   legend2.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('alignment-baseline', 'hanging').attr("x", 30).attr("y", 35*(i+1)).style('font-size', "12px").style('font-family', 'sans-serif');
-                  legend3.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 30).attr("y", 35*(i+1)).style('font-size', "12px").style('font-family', 'sans-serif');
+                  legend3.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 40).attr("y", 35*(i+1)).style('font-size', "12px").style('font-family', 'sans-serif');
 
 
 
@@ -167,7 +170,13 @@
                 legend2.append("text").text("Non-medalist").attr('text-anchor', "start").attr('alignment-baseline', 'hanging').attr("x", 30).attr("y", 35*(4)).style('font-size', "12px").style('font-family', 'sans-serif');
 
                 legend3.append('circle').style('fill', 'black').attr('r', 2).attr('cx', 20).attr('cy', 35*(4));
-                legend3.append("text").text('Non-medalist').attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 30).attr("y", 35*(4)).style('font-size', "12px").style('font-family', 'sans-serif');
+                legend3.append('circle').style('fill', 'gold').attr('r', 2).attr('cx', 20).attr('cy', 35*(5));
+                legend3.append('circle').style('fill', 'gold').attr('r', 12).attr('cx', 20).attr('cy', 35*(6));
+
+                legend3.append("text").text('Non-medalist').attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 40).attr("y", 35*(4)).style('font-size', "12px").style('font-family', 'sans-serif');
+                legend3.append("text").text('Less medals won').attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 40).attr("y", 35*(5)).style('font-size', "12px").style('font-family', 'sans-serif');
+                legend3.append("text").text('More medals won').attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 40).attr("y", 35*(6)).style('font-size', "12px").style('font-family', 'sans-serif');
+
 
 
                 medalData.forEach((d) => {
@@ -185,7 +194,7 @@
 
                 });
 
-                obj.append("text").text("Individual height for amount of medal won").attr("x", width/2).attr("y", 30).attr('text-anchor', "middle").style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
+                obj.append("text").text("Individual height (m) vs number of medals won").attr("x", width/2).attr("y", 30).attr('text-anchor', "middle").style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
 
 
 
@@ -337,11 +346,11 @@
 
 
        medianHeight(data, svg2);
-       svg2.append("text").text("Median height for both genders").attr("x", width/2).attr("y", 30).attr('text-anchor', 'middle').style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
+       svg2.append("text").text("Median height (m) for both genders vs select sports").attr("x", width/2).attr("y", 30).attr('text-anchor', 'middle').style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
 
        let extent=d3.extent(nonMedalData,d=> d.height)
 
-       heightScale = d3.scaleLinear().domain(extent).range([420,0]);
+       heightScale = d3.scaleLinear().domain([extent[0]+0.05,extent[1]+0.02]).range([420,0]);
 
        let sports_array=['gymnastics', "basketball", "shooting", "weightlifting", "badminton", "sailing"];
 
@@ -405,7 +414,7 @@
             });}
          })
 
-     svg3.append("text").text("Individual height for each sport category").attr("x", width/2).attr("y", 30).attr('text-anchor', 'middle').style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
+     svg3.append("text").text("Individual height (m) vs select sport category").attr("x", width/2).attr("y", 30).attr('text-anchor', 'middle').style('font-size', "15px").style('font-weight', 'bold').style('font-family', 'sans-serif');
 
 
 
