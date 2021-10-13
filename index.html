@@ -71,7 +71,7 @@
       between medalists and non medalists is quite similar. So, being the
       shortest gymnast or the tallest basketball player does not mean that
       you will pick up more medals at the Olympics. But we can see that, for instance,
-      gynmasts tend to be shorter than basketball players</p>
+      gynmasts tend to be shorter than basketball players.</p>
   </div>
   </div>
 
@@ -196,7 +196,7 @@
 
                   legend1.append('circle').style('fill', d).attr('r', 5).attr('cx', 10).attr('cy', 35*(i+1));
                   legend2.append('rect').style('fill', d).attr('x', 10).attr('y', 35*(i+1)).attr("height",10).attr("width", 10);
-                  legend3.append('circle').style('fill', d).attr('r', 3).attr('cx', 20).attr('cy', 35*(i+1));
+                  legend3.append('circle').style('fill', d).attr('r', 3).attr('cx', 20).attr('cy', 35*(i+1)).style("opacity", 0.75);
 
                   legend1.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 25).attr("y", 35*(i+1)).style('font-size', "12px").style('font-family', 'sans-serif');
                   legend2.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('alignment-baseline', 'hanging').attr("x", 30).attr("y", 35*(i+1)).style('font-size', "12px").style('font-family', 'sans-serif');
@@ -210,9 +210,9 @@
                 .attr("height",10).attr("width", 10);
                 legend2.append("text").text("Non-medalist").attr('text-anchor', "start").attr('alignment-baseline', 'hanging').attr("x", 30).attr("y", 35*(4)).style('font-size', "12px").style('font-family', 'sans-serif');
 
-                legend3.append('circle').style('fill', 'black').attr('r', 3).attr('cx', 20).attr('cy', 35*(4));
-                legend3.append('circle').style('fill', 'gold').attr('r', 3).attr('cx', 20).attr('cy', 35*(5));
-                legend3.append('circle').style('fill', 'gold').attr('r', 12).attr('cx', 20).attr('cy', 35*(6));
+                legend3.append('circle').style('fill', 'black').attr('r', 3).attr('cx', 20).attr('cy', 35*(4)).style("opacity", 0.75);
+                legend3.append('circle').style('fill', 'gold').attr('r', 3).attr('cx', 20).attr('cy', 35*(5)).style("opacity", 0.75);
+                legend3.append('circle').style('fill', 'gold').attr('r', 12).attr('cx', 20).attr('cy', 35*(6)).style("opacity", 0.75);
 
                 legend3.append("text").text('Non-medalist').attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 40).attr("y", 35*(4)).style('font-size', "12px").style('font-family', 'sans-serif');
                 legend3.append("text").text('Less medals won').attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 40).attr("y", 35*(5)).style('font-size', "12px").style('font-family', 'sans-serif');
