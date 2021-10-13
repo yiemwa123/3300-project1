@@ -23,6 +23,13 @@
           text-align: center;
         }
 
+        .analysis{
+          text-align: center;
+          margin-left: 350px;
+          width: 500px;
+
+        }
+
 
     </style>
 
@@ -32,16 +39,27 @@
 </head>
 
 <body>
-  <h2> Is height a predictor of success in Olympic sports? </h2>
-  <div class="graph" style="text-align:center;">
+  <h2> Is height a predictor of success in Olympic sports (Rio 2016)? </h2>
+  <div class="graph">
     <svg id="graph1"></svg>
     <svg id="legend1" width="200" height="200"> </svg>
+    <p class="analysis"> Hmm... most people won at most one Olympic medal at the
+      Rio Olympics. It's hard to tell anything just by looking at this.
+      Intuitively, how height makes a difference (if one exists) varies by sport. You would
+      expect that most successful gymnasts are shorter and most successful basketball
+      players are taller. Let's look at a few sports!</p>
   </div>
 
 
   <div class="graph">
     <svg id="graph2" width="650" height="500"></svg>
     <svg id="legend2" width="200" height="200"> </svg>
+    <p class="analysis"> There doesn't seem to be a big difference between
+      medalist categories within each sport, but you can see a difference
+      between heights of atheletes across sports
+      (e.g. gymnasts are notably a lot shorter than basketball players).
+      However, we are only looking at the median, which does not tell us the
+      whole story. Let's take a look at the distribution of the points!</p>
   </div>
 
 
@@ -49,6 +67,11 @@
   <div class="graph">
     <svg id="graph3" width="650" height="500"></svg>
     <svg id="legend3" width="200" height="300"> </svg>
+    <p class="analysis"> So, it appears that the distribution of points
+      between medalists and non medalists is quite similar. So, being the
+      shortest gymnast or the tallest basketball player does not mean that
+      you will pick up more medals at the Olympics. But we can see that, for instance,
+      gynmasts tend to be shorter than basketball players</p>
   </div>
   </div>
 
@@ -173,7 +196,7 @@
 
                   legend1.append('circle').style('fill', d).attr('r', 5).attr('cx', 10).attr('cy', 35*(i+1));
                   legend2.append('rect').style('fill', d).attr('x', 10).attr('y', 35*(i+1)).attr("height",10).attr("width", 10);
-                  legend3.append('circle').style('fill', d).attr('r', 2).attr('cx', 20).attr('cy', 35*(i+1));
+                  legend3.append('circle').style('fill', d).attr('r', 3).attr('cx', 20).attr('cy', 35*(i+1));
 
                   legend1.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 25).attr("y", 35*(i+1)).style('font-size', "12px").style('font-family', 'sans-serif');
                   legend2.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('alignment-baseline', 'hanging').attr("x", 30).attr("y", 35*(i+1)).style('font-size', "12px").style('font-family', 'sans-serif');
@@ -187,8 +210,8 @@
                 .attr("height",10).attr("width", 10);
                 legend2.append("text").text("Non-medalist").attr('text-anchor', "start").attr('alignment-baseline', 'hanging').attr("x", 30).attr("y", 35*(4)).style('font-size', "12px").style('font-family', 'sans-serif');
 
-                legend3.append('circle').style('fill', 'black').attr('r', 2).attr('cx', 20).attr('cy', 35*(4));
-                legend3.append('circle').style('fill', 'gold').attr('r', 2).attr('cx', 20).attr('cy', 35*(5));
+                legend3.append('circle').style('fill', 'black').attr('r', 3).attr('cx', 20).attr('cy', 35*(4));
+                legend3.append('circle').style('fill', 'gold').attr('r', 3).attr('cx', 20).attr('cy', 35*(5));
                 legend3.append('circle').style('fill', 'gold').attr('r', 12).attr('cx', 20).attr('cy', 35*(6));
 
                 legend3.append("text").text('Non-medalist').attr('text-anchor', "start").attr('alignment-baseline', 'middle').attr("x", 40).attr("y", 35*(4)).style('font-size', "12px").style('font-family', 'sans-serif');
