@@ -446,7 +446,7 @@
        nonMedalData.forEach(d=>{
 
          if (sports_array.includes(d.sport)){
-                chartArea.append('circle').attr('fill', 'black').attr("cx", sportScale(d.sport)+sportScale.bandwidth()/4+Math.random()*20-10).attr("cy", heightScale(d.height)+Math.random()*10-5).attr('r', 3).style('opacity',0.75);
+                chartArea.append('circle').attr('fill', 'black').attr("cx", sportScale(d.sport)+sportScale.bandwidth()/4+Math.random()*20-10).attr("cy", heightScale(d.height)+Math.random()*10-5).attr('r', 3).style("opacity" , 0.75);
          }
       })
 
