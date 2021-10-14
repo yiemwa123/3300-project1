@@ -282,7 +282,6 @@
           .attr("transform", `translate(50, 40)`)
           .call(yGrid);
 
-        // const sports=d3.map(sportss);
         const sportScale = d3.scaleBand().domain(sports_array).range([0, 570]).padding(0.15);
 
         let x = d3.axisBottom(sportScale);
