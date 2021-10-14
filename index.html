@@ -25,7 +25,7 @@
 
         .analysis{
           text-align: left;
-          margin-left: 370px;
+          margin-left: 23%;
           width: 600px;
 
         }
@@ -199,7 +199,7 @@
 
                   legend1.append('circle').style('fill', d).attr('r', 5).attr('cx', 10).attr('cy', 35*(i+1)+20);
                   legend2.append('rect').style('fill', d).attr('x', 10).attr('y', 35*(i+1)+20).attr("height",10).attr("width", 10);
-                  legend3.append('circle').style('fill', d).attr('r', 3).attr('cx', 20).attr('cy', 35*(i+1)+20).style("opacity", 0.75);
+                  legend3.append('circle').style('fill', d).attr('r', 3).attr('cx', 20).attr('cy', 35*(i+1)+20).style("opacity", 0.7);
 
                   legend1.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('dominant-baseline', 'middle').attr("x", 25).attr("y", 35*(i+1)+20).style('font-size', "12px").style('font-family', 'sans-serif');
                   legend2.append("text").text(medTypeCap[i]).attr('text-anchor', "start").attr('dominant-baseline', 'hanging').attr("x", 30).attr("y", 35*(i+1)+20).style('font-size', "12px").style('font-family', 'sans-serif');
@@ -213,9 +213,9 @@
                 .attr("height",10).attr("width", 10);
                 legend2.append("text").text("Non-medalist").attr('text-anchor', "start").attr('dominant-baseline', 'hanging').attr("x", 30).attr("y", 35*(4)+20).style('font-size', "12px").style('font-family', 'sans-serif');
 
-                legend3.append('circle').style('fill', 'black').attr('r', 3).attr('cx', 20).attr('cy', 35*(4)+20).style("opacity", 0.75);
-                legend3.append('circle').style('fill', 'gold').attr('r', 3).attr('cx', 20).attr('cy', 35*(5)+20).style("opacity", 0.75);
-                legend3.append('circle').style('fill', 'gold').attr('r', 12).attr('cx', 20).attr('cy', 35*(6)+20).style("opacity", 0.75);
+                legend3.append('circle').style('fill', 'black').attr('r', 3).attr('cx', 20).attr('cy', 35*(4)+20).style("opacity", 0.7);
+                legend3.append('circle').style('fill', 'gold').attr('r', 3).attr('cx', 20).attr('cy', 35*(5)+20).style("opacity", 0.7);
+                legend3.append('circle').style('fill', 'gold').attr('r', 12).attr('cx', 20).attr('cy', 35*(6)+20).style("opacity", 0.7);
 
                 legend3.append("text").text('Non-medalist').attr('text-anchor', "start").attr('dominant-baseline', 'middle').attr("x", 40).attr("y", 35*(4)+20).style('font-size', "12px").style('font-family', 'sans-serif');
                 legend3.append("text").text('Less medals won').attr('text-anchor', "start").attr('dominant-baseline', 'middle').attr("x", 40).attr("y", 35*(5)+20).style('font-size', "12px").style('font-family', 'sans-serif');
@@ -446,7 +446,7 @@
        nonMedalData.forEach(d=>{
 
          if (sports_array.includes(d.sport)){
-                chartArea.append('circle').attr('fill', 'black').attr("cx", sportScale(d.sport)+sportScale.bandwidth()/4+Math.random()*20-10).attr("cy", heightScale(d.height)+Math.random()*10-5).attr('r', 3).style("opacity" , 0.75);
+                chartArea.append('circle').attr('fill', 'black').attr("cx", sportScale(d.sport)+sportScale.bandwidth()/4+Math.random()*20-10).attr("cy", heightScale(d.height)+Math.random()*10-5).attr('r', 3).style("opacity" , 0.7);
          }
       })
 
@@ -458,7 +458,7 @@
               if (d[n] > 0) {
 
                        chartArea.append('circle').attr('fill', medCol[i]).attr("cx", sportScale(d.sport)+sportScale.bandwidth()*3/4+Math.random()*20-10).attr("cy", heightScale(d.height)+Math.random()*10-5).attr('r', d[n]*3)
-                       .style("opacity" , 0.75);
+                       .style("opacity" , 0.7);
                   }
             });}
          })
